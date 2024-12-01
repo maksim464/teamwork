@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script defer src="./index.js"></script>
    
 </head>
 <body>
@@ -39,26 +40,10 @@
 
 <div class="main__todo-container">
     <div class="todo-container__inputs">
-        <input placeholder="Введіть завдання" type="text"> 
-        <button>Додати завдання</button>
+        <input class="text__input" placeholder="Введіть завдання" type="text"> 
+        <button class="input__button add">Додати завдання</button>
     </div>
-    <ol class="todo-container__todos">
-
-        <li class="todos_todo">
-            <p class="todo__title">lalalalalalalala</p>
-            <div class="todo__btn-container">
-                <button class="todo__btn edit">Редагувати</button>
-                <button class="todo__btn remove">Видалити</button>
-            </div>
-        </li>
-        <li class="todos_todo">
-            <p class="todo__title">lalalalalalalala</p>
-            <div class="todo__btn-container">
-                <button class="todo__btn edit">Редагувати</button>
-                <button class="todo__btn remove">Видалити</button>
-            </div>
-        </li>
-
+    <ol class="todo-container__todos todo-list">
 
     </ol>
 
