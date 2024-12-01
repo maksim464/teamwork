@@ -54,10 +54,25 @@ width: 80%;
 .main__uncheck-container{
     background-color: black;
     color: #F5E74C;
-    width: 25%;
+    width: 27%;
     height: 100%;
     border-radius: 1.2rem;
-    
+    padding: 1rem;
+
+}
+.main__uncheck-container ol {
+    width: 100%;
+    border-radius:1rem;
+    min-height: 100%;
+    border: 0.4rem solid #F5E74C;
+    padding: 1.5rem;
+}
+
+.actual__text{
+    min-width: 100%;
+    overflow: hidden;
+    word-break: break-all;
+    max-height: 1rem;
 }
 .todo-container__inputs{
     width: 100%;
@@ -90,7 +105,6 @@ width: 80%;
 }
 .todos_todo{
 border-bottom: 0.2rem;
-
 font-size: 1rem;
 display: flex;
 flex-direction: row;
