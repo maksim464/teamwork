@@ -63,8 +63,7 @@ function updateUncheckedList() {
 
 // Функція для збереження задач у кукі
 function saveTodosToCookies() {
-    const uncheckedTodos = todoList.filter(todo => !todo.status);
-    const json = JSON.stringify(uncheckedTodos);
+    const json = JSON.stringify(todoList);
     document.cookie = `todos=${encodeURIComponent(json)}; path=/; max-age=31536000`; // збереження на 1 рік
 }
 
@@ -76,7 +75,8 @@ function loadTodosFromCookies() {
         const todos = JSON.parse(json);
         todos.forEach(todoData => {
             const { id, name, status, updated } = todoData;
-            new Todo(id, name, status, updated);
+            const newTodo = new Todo(id, name, status, updated);
+            document.querySelector('.todo-list').innerHTML += newTodo.html;
         });
     }
 }
