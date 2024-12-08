@@ -1,4 +1,3 @@
-// Масив для зберігання всіх створених об'єктів класу Todo
 const todoList = [];
 
 class Todo {
@@ -62,7 +61,32 @@ function updateUncheckedList() {
     });
 }
 
-// Додавання нової задачі
+// Функція для збереження задач у кукі
+function saveTodosToCookies() {
+    const uncheckedTodos = todoList.filter(todo => !todo.status);
+    const json = JSON.stringify(uncheckedTodos);
+    document.cookie = `todos=${encodeURIComponent(json)}; path=/; max-age=31536000`; // збереження на 1 рік
+}
+
+// Функція для зчитування задач з кукі
+function loadTodosFromCookies() {
+    const match = document.cookie.match(new RegExp('(^| )todos=([^;]+)'));
+    if (match) {
+        const json = decodeURIComponent(match[2]);
+        const todos = JSON.parse(json);
+        todos.forEach(todoData => {
+            const { id, name, status, updated } = todoData;
+            new Todo(id, name, status, updated);
+        });
+    }
+}
+
+// Завантаження задач з кукі при завантаженні сторінки
+document.addEventListener('DOMContentLoaded', () => {
+    loadTodosFromCookies();
+    updateUncheckedList();
+});
+
 document.querySelector('.add').addEventListener('click', () => {
     const inputElement = document.querySelector('.text__input');
     const todoName = inputElement.value.trim();
@@ -70,11 +94,11 @@ document.querySelector('.add').addEventListener('click', () => {
         const newTodo = new Todo(todoList.length + 1, todoName);
         document.querySelector('.todo-list').innerHTML += newTodo.html;
         updateUncheckedList(); // Оновлюємо список невиконаних задач
+        saveTodosToCookies(); // Зберігаємо задачі в кукі
         inputElement.value = '';
     }
 });
 
-// Делегування подій для редагування, видалення та зміни статусу
 document.querySelector('.todo-list').addEventListener('click', (event) => {
     const button = event.target;
     const todoElement = button.closest('.todos_todo');
@@ -96,4 +120,5 @@ document.querySelector('.todo-list').addEventListener('click', (event) => {
     }
 
     updateUncheckedList(); // Оновлюємо список невиконаних задач
+    saveTodosToCookies(); // Зберігаємо задачі в кукі
 });
