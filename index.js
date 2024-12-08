@@ -122,3 +122,4 @@ document.querySelector('.todo-list').addEventListener('click', (event) => {
     updateUncheckedList(); // Оновлюємо список невиконаних задач
     saveTodosToCookies(); // Зберігаємо задачі в кукі
 });
+
