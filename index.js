@@ -81,10 +81,39 @@ function loadTodosFromCookies() {
     }
 }
 
+// Запит дозволу на надсилання повідомлень
+function requestNotificationPermission() {
+    if (Notification.permission !== "granted") {
+        Notification.requestPermission();
+    }
+}
+
+// Функція для надсилання повідомлення
+function sendNotification(title, body) {
+    if (Notification.permission === "granted") {
+        new Notification(title, { body });
+    }
+}
+
+// Функція для налаштування нагадування через день
+function setDailyReminder(todo) {
+    const reminderTime = 24 * 60 * 60 * 1000; // 24 години в мілісекундах
+    setTimeout(() => {
+        sendNotification("Нагадування", `Завдання: ${todo.name}`);
+        setDailyReminder(todo); // Встановлюємо наступне нагадування
+    }, reminderTime);
+}
+
 // Завантаження задач з кукі при завантаженні сторінки
 document.addEventListener('DOMContentLoaded', () => {
+    requestNotificationPermission();
     loadTodosFromCookies();
     updateUncheckedList();
+    todoList.forEach(todo => {
+        if (!todo.status) {
+            setDailyReminder(todo);
+        }
+    });
 });
 
 document.querySelector('.add').addEventListener('click', () => {
@@ -95,6 +124,7 @@ document.querySelector('.add').addEventListener('click', () => {
         document.querySelector('.todo-list').innerHTML += newTodo.html;
         updateUncheckedList(); // Оновлюємо список невиконаних задач
         saveTodosToCookies(); // Зберігаємо задачі в кукі
+        setDailyReminder(newTodo); // Встановлюємо нагадування
         inputElement.value = '';
     }
 });
