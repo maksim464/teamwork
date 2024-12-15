@@ -7,10 +7,9 @@ class Todo {
         this.status = status;
         this.updated = updated;
         this.html = this.generateHtml();
-        todoList.push(this); // Додаємо об'єкт у глобальний масив
+        todoList.push(this); 
     }
 
-    // Генерація HTML для задачі
     generateHtml() {
         return `
 <li class="todos_todo" data-id="${this.id}">
@@ -23,98 +22,112 @@ class Todo {
 </li>`;
     }
 
-    // Метод для редагування задачі
+ 
     edit(newName) {
         this.name = newName;
         this.updated = true;
-        this.html = this.generateHtml(); // Оновлюємо HTML
+        this.html = this.generateHtml(); 
     }
 
-    // Метод для зміни статусу
+  
     toggleStatus() {
         this.status = !this.status;
-        this.html = this.generateHtml(); // Оновлюємо HTML
+        this.html = this.generateHtml(); 
     }
 
-    // Метод для видалення задачі
+   
     remove() {
         const index = todoList.findIndex(todo => todo.id === this.id);
         if (index !== -1) {
-            todoList.splice(index, 1); // Видаляємо об'єкт з масиву
+            todoList.splice(index, 1); 
         }
     }
 }
 
-// Оновлення списку невиконаних задач
+
 function updateUncheckedList() {
     const uncheckContainer = document.querySelector('.uncheck-container__actuals');
-    uncheckContainer.innerHTML = ''; // Очищуємо список
+    uncheckContainer.innerHTML = ''; 
 
     const uncheckedTodos = todoList.filter(todo => !todo.status);
-    uncheckedTodos.forEach(todo => {
+
+    for (let index = 0; index < uncheckedTodos.length; index++) {
+        if (index === 10) {
+            break; 
+        }
+
+        const todo = uncheckedTodos[index];
         const li = document.createElement('li');
         li.classList.add('actuals__actual');
         li.innerHTML = `
             <p class="actual__text">${todo.id}. ${todo.name}</p>
         `;
         uncheckContainer.appendChild(li);
-    });
+    }
 }
 
-// Функція для збереження задач у кукі
-function saveTodosToCookies() {
+
+function saveTodosToLocalStorage() {
     const json = JSON.stringify(todoList);
-    document.cookie = `todos=${encodeURIComponent(json)}; path=/; max-age=31536000`; // збереження на 1 рік
+    localStorage.setItem('todos', json); 
 }
 
-// Функція для зчитування задач з кукі
-function loadTodosFromCookies() {
-    const match = document.cookie.match(new RegExp('(^| )todos=([^;]+)'));
-    if (match) {
-        const json = decodeURIComponent(match[2]);
+
+function loadTodosFromLocalStorage() {
+    const json = localStorage.getItem('todos'); 
+    if (json) {
         const todos = JSON.parse(json);
-        todos.forEach(todoData => {
-            const { id, name, status, updated } = todoData;
+
+        
+        const todoListContainer = document.querySelector('.todo-list');
+
+        
+        todoListContainer.innerHTML = '';
+
+       
+        todos.forEach(todo => {
+            const { id, name, status, updated } = todo;
             const newTodo = new Todo(id, name, status, updated);
-            document.querySelector('.todo-list').innerHTML += newTodo.html;
+            todoListContainer.innerHTML += newTodo.html; 
         });
     }
 }
 
-// Запит дозволу на надсилання повідомлень
+
 function requestNotificationPermission() {
     if (Notification.permission !== "granted") {
         Notification.requestPermission();
     }
 }
 
-// Функція для надсилання повідомлення
+
 function sendNotification(title, body) {
     if (Notification.permission === "granted") {
         new Notification(title, { body });
     }
 }
 
-// Функція для налаштування нагадування через день
+
 function setDailyReminder(todo) {
-    const reminderTime = 24 * 60 * 60 * 1000; // 24 години в мілісекундах
+    const reminderTime = 24 * 60 * 60 * 1000; 
     setTimeout(() => {
         sendNotification("Нагадування", `Завдання: ${todo.name}`);
-        setDailyReminder(todo); // Встановлюємо наступне нагадування
+        setDailyReminder(todo); 
     }, reminderTime);
 }
 
-// Завантаження задач з кукі при завантаженні сторінки
+
 document.addEventListener('DOMContentLoaded', () => {
     requestNotificationPermission();
-    loadTodosFromCookies();
+    loadTodosFromLocalStorage(); 
     updateUncheckedList();
     todoList.forEach(todo => {
         if (!todo.status) {
-            setDailyReminder(todo);
+            setDailyReminder(todo); 
         }
     });
 });
+
 
 document.querySelector('.add').addEventListener('click', () => {
     const inputElement = document.querySelector('.text__input');
@@ -122,10 +135,10 @@ document.querySelector('.add').addEventListener('click', () => {
     if (todoName) {
         const newTodo = new Todo(todoList.length + 1, todoName);
         document.querySelector('.todo-list').innerHTML += newTodo.html;
-        updateUncheckedList(); // Оновлюємо список невиконаних задач
-        saveTodosToCookies(); // Зберігаємо задачі в кукі
-        setDailyReminder(newTodo); // Встановлюємо нагадування
-        inputElement.value = '';
+        updateUncheckedList(); 
+        saveTodosToLocalStorage();
+        setDailyReminder(newTodo);
+        inputElement.value = ''; 
     }
 });
 
@@ -139,17 +152,16 @@ document.querySelector('.todo-list').addEventListener('click', (event) => {
         const newName = prompt("Введіть нову назву задачі:", todo.name);
         if (newName) {
             todo.edit(newName);
-            todoElement.outerHTML = todo.html; // Оновлюємо HTML на сторінці
+            todoElement.outerHTML = todo.html; 
         }
     } else if (button.classList.contains('remove')) {
         todo.remove();
-        todoElement.remove(); // Видаляємо елемент з DOM
+        todoElement.remove();
     } else if (button.classList.contains('toggle-status')) {
         todo.toggleStatus();
-        todoElement.outerHTML = todo.html; // Оновлюємо HTML на сторінці
+        todoElement.outerHTML = todo.html; 
     }
 
-    updateUncheckedList(); // Оновлюємо список невиконаних задач
-    saveTodosToCookies(); // Зберігаємо задачі в кукі
+    updateUncheckedList(); 
+    saveTodosToLocalStorage(); 
 });
-
