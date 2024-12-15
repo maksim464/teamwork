@@ -131,3 +131,95 @@ flex: 1 0;
 overflow-x: hidden;
 align-items: center;
 }
+
+@media (max-width: 600px) {
+    html {
+        font-size: 14px; 
+    }
+
+    h1 {
+        font-size: 28px;
+      
+    }
+
+    header {
+        padding: 10px;  display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .filtres {
+        width: 100%;
+        flex-direction: column;
+        gap: 10px;
+        padding: 0;
+    }
+
+    .filter {
+        width: 100%;
+        padding: 0.8rem 2rem;
+        text-align: center;
+    }
+
+    main {
+        padding: 10px;
+        gap: 10px;
+        flex-direction: column;
+      
+    }
+    
+    .main__todo-container {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .main__uncheck-container {
+        min-height: 25svh;
+        width: 100%;
+        padding: 10px;
+        border-radius: 1.2rem;
+    }
+    .todo-container__inputs{
+        flex-direction: column;
+        gap: 15px;
+    }
+    .todo-container__inputs input {
+        width: 100%;
+    }
+    .todo__checkbox {
+        margin: 0 auto;
+        width: 2rem;
+        padding-left: 10px;
+       
+    }
+    .todo-container__inputs button {
+        width: 100%;
+    }
+    .todo__btn-container{
+        gap: 10px;
+        display: flex;
+        flex-direction: column;
+    }
+    .todos_todo {
+        flex-direction: column;
+        margin-bottom: 1rem;
+        gap: 10px;
+    }
+
+    .todo__title {
+        font-size: 1rem;
+    }
+
+    .todo__btn {
+        width: 100%;
+        padding: 0.5rem 1rem;
+      
+    }
+
+    li {
+        margin-bottom: 1.5rem;
+    }
+    input.text__input{
+        padding: 15px;
+    }
+}
