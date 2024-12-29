@@ -74,7 +74,8 @@ width: 80%;
     text-align: center;
     text-decoration: none;
     overflow: hidden;
-    transition: color 0.4s;
+    transition: color 0.4s, transform 0.3s;
+    transform: perspective(500px) rotateX(0deg) rotateY(0deg);
 }
 
 .animated-button::before {
@@ -92,6 +93,7 @@ width: 80%;
 .animated-button:hover {
     color: #000;
     background-color: #F5E74C;
+    transform: perspective(500px) rotateX(10deg) rotateY(10deg);
 }
 
 .animated-button:hover::before {
@@ -99,9 +101,10 @@ width: 80%;
 }
 
 .animated-button:active {
-    transform: scale(0.95);
+    transform: scale(0.95) perspective(500px) rotateX(-5deg) rotateY(-5deg);
     background-color: #f0d123;
 }
+
 
 .main__uncheck-container ol {
     width: 100%;
